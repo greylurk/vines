@@ -1,0 +1,14 @@
+CACHE MANIFEST
+# rev 9
+FALLBACK:
+/NPCs/ /NPCs/index.html
+CACHE:
+/NPCs/js/backbone.js
+/NPCs/js/backbone.localStorage.js
+/NPCs/js/json2.js
+/NPCs/js/main.js
+/NPCs/js/underscore.js
+/NPCs/js/zepto.js
+/NPCs/css/main.css
+/NPCs/images/destroy.png
+/NPCs/index.html

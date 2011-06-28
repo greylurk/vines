@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>NPC Manager</title>
+        <meta charset="utf-8" />
+        <script type="text/javascript" src="js/underscore.js"></script>
+        <script type="text/javascript" src="js/zepto.js"></script>
+        <script type="text/javascript" src="js/json2.js"></script>
+        <script type="text/javascript" src="js/backbone.js"></script>
+        <script type="text/javascript" src="js/backbone.localStorage.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <link rel="stylesheet" href="css/main.css" type="text/css" />
+    </head>
+    
+    <body>
+        <div id="nav-bar">
+            <a class="back-button" href="#">Back</a>
+            <h1 class="title"></h1>
+        </div>
+        <div id="main">
+        </div>
+        
+        <div id="templates">
+            <div id="main-view">
+                <div class='view-screen'>
+                    <div>
+                        <input type='text' class='create-npc' placeholder='Add an NPC' />
+                    </div>
+                    <div class='npcs'>
+                        <ul class='npc-list'></ul>
+                    
+                    </div>
+                </div>
+            </div>
+            <div id="detail-view">
+                <div class="accordion-head">Attributes</div>
+                <div class="accordion-panel attribute-panel">
+                </div>
+                <div class="accordion-head">Skills</div>
+                <div class="accordion-panel skill-panel">
+                </div>
+                <div class="accordion-head">Rolls</div>
+                <div class="accordion-panel">
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

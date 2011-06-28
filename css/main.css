@@ -1,0 +1,37 @@
+.npc-destroy { 
+    background: url(../images/destroy.png);
+    width: 20px;
+    height: 20px;
+    display:inline-block;
+    cursor: pointer;
+}
+
+.npc-link {
+    display: inline-block;
+    width: 150px;
+    cursor: pointer;
+}
+
+ul.npc-list {
+    list-style: none;
+}
+
+#templates {
+    display:none;
+}
+
+#nav-bar {
+    width: 100%;
+    background: #666;
+    color: white;
+}
+
+#nav-bar a {
+    float:left;
+    width: 100px;
+    border: 1px solid #ccc;
+
+#nav-bar h1 {
+    float:left;
+    color: white;
+}
