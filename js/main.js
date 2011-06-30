@@ -6,7 +6,7 @@ window.App = {
 }
 
 App.Models.NPC = Backbone.Model.extend({
-    ATTRIBUTES: [ 'Intelligence','Wits','Composure','Strength','Dexterity','Stamina','Presence','Manipuation','Composure'],
+    ATTRIBUTES: [ 'Intelligence','Wits','Composure','Strength','Dexterity','Stamina','Presence','Manipuation','Resolve'],
     SKILLS: [
         'Academics','Computer','Crafts','Investigation','Medicine','Occult','Politics','Science',
         'Athletics','Brawl','Drive','Firearms','Larceny','Stealth','Survival','Weaponry',
@@ -84,7 +84,7 @@ App.Views.StatPanel = Backbone.View.extend({
         'change .stat-field': "saveValue"
     },
     
-    className: "skill",
+    className: "stat",
     template: _.template("<label for='<%=varName%>'><%=label%><input name='<%=varName%>' type='number' min='1' max='5' class='stat-field' value='<%=value%>' /></label>"),
     render: function() {
         $(this.el).html(this.template({
@@ -97,8 +97,8 @@ App.Views.StatPanel = Backbone.View.extend({
     saveValue: function() {
         var values = {};
         values[this._options.varName] = this.$(".stat-field").val();
-        debugger;
         this.model.set(values );
+        this.model.save();
     },
     updateValue: function() {
         var value = this.model.get(this._options.varName);
@@ -107,7 +107,7 @@ App.Views.StatPanel = Backbone.View.extend({
 });
 
 App.Views.SkillPanel = App.Views.StatPanel.extend({  className: "skill" });
-App.Views.AttributePanel = App.Views.StatPanel.extend({  className: "skill" });
+App.Views.AttributePanel = App.Views.StatPanel.extend({  className: "attribute" });
         
 App.Views.NavBarView = Backbone.View.extend({
     initialize: function( options ) {
