@@ -97,7 +97,6 @@ App.Views.StatPanel = Backbone.View.extend({
     saveValue: function() {
         var values = {};
         values[this._options.varName] = this.$(".stat-field").val();
-        debugger;
         this.model.set(values );
     },
     updateValue: function() {
@@ -106,8 +105,8 @@ App.Views.StatPanel = Backbone.View.extend({
     }
 });
 
-App.Views.SkillPanel = App.Views.StatPanel.extend({  className: "skill" });
-App.Views.AttributePanel = App.Views.StatPanel.extend({  className: "skill" });
+App.Views.SkillPanel = App.Views.StatPanel.extend({});
+App.Views.AttributePanel = App.Views.StatPanel.extend({});
         
 App.Views.NavBarView = Backbone.View.extend({
     initialize: function( options ) {
