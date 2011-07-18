@@ -105,8 +105,8 @@ App.Views.StatPanel = Backbone.View.extend({
     }
 });
 
-App.Views.SkillPanel = App.Views.StatPanel.extend({  className: "skill" });
-App.Views.AttributePanel = App.Views.StatPanel.extend({  className: "attribute" });
+App.Views.SkillPanel = App.Views.StatPanel.extend({});
+App.Views.AttributePanel = App.Views.StatPanel.extend({});
 
 App.Views.MainView = Backbone.View.extend({
     events: {
