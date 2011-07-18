@@ -3,9 +3,9 @@ window.App = {
     Collections: {},
     Views: {},
     Controllers: {}
-}
+};
 
-App.Models.NPC = Backbone.Model.extend({
+App.Models.Character = Backbone.Model.extend({
     ATTRIBUTES: [ 'Intelligence','Wits','Composure','Strength','Dexterity','Stamina','Presence','Manipuation','Resolve'],
     SKILLS: [
         'Academics','Computer','Crafts','Investigation','Medicine','Occult','Politics','Science',
@@ -32,60 +32,59 @@ App.Models.NPC = Backbone.Model.extend({
     }
 });
 
-App.Collections.NPCCollection = Backbone.Collection.extend({
+App.Collections.CharacterCollection = Backbone.Collection.extend({
     localStorage: new Store("NonPlayerCharacters"),
-    model: App.Models.NPC
+    model: App.Models.Character
 });
 
-App.Views.NPCView = Backbone.View.extend({
+App.Views.CharacterView = Backbone.View.extend({
     tagName: "li",
-    className: "npc",
-    template: _.template('<div id="npc-link-template"><span class="npc-link"></span><span class="npc-destroy"></span></div>'),
+    template: _.template('<a href="#character-details&id=<%=id%>" class="details-link"><%=name%></a><a href="#character-destroy&id=<%=id%>" class="destroy-link" data-split-icon="delete"></a>'),
     events: {
-        "click .npc-link"    : "showDetail",
-        "click .npc-destroy" : "destroy"
+        "click .details-link": "details",
+        "click .destroy-link": "destroy"
     },
     
     initialize: function( options ) {
-        _.bindAll(this,'render');
+        _.bindAll(this,'render',"details","destroy");
         this.model.bind('change',this.render);
         this.model.view = this;
     },
     
-    render: function() {
-        $(this.el).html(this.template( this.model.toJSON()));
-        $(this.el).attr("id","npc-"+this.model.id);
-        this.setContent();
-        return this;
-    },
-    
-    setContent: function() {
-        this.$(".npc-link").html(this.model.get("name"));
-    },
-    
-    showDetail: function() {
-        window.location.hash='npc/'+this.model.id;
+    details: function() {
+        App.Controller.trigger("character-details", {id:this.model.id});
     },
     
     destroy: function() {
-        this.model.destroy();
-        $(this.el).remove();
+        App.Controller.trigger("character-destroy", {id:this.model.id});
+    },
+    
+    render: function() {
+        $(this.el)
+            .html(this.template( this.model.toJSON()))
+            .attr({
+                id: "Character-"+this.model.id
+                
+            });
+        return this;
     }
+    
 });
 
 App.Views.StatPanel = Backbone.View.extend({
+    className: "stat",
+    template: _.template("<label for='<%=varName%>'><%=label%><input name='<%=varName%>' type='number' min='1' max='5' class='stat-field' value='<%=value%>' /></label>"),
+    
+    events: {
+        'change .stat-field': "saveValue"
+    },
+
     initialize: function( options ) {
         this._options = options;
         _.bindAll(this, "updateValue");
         this.model.bind('change', this.updateValue);
     },
     
-    events: {
-        'change .stat-field': "saveValue"
-    },
-    
-    className: "stat",
-    template: _.template("<label for='<%=varName%>'><%=label%><input name='<%=varName%>' type='number' min='1' max='5' class='stat-field' value='<%=value%>' /></label>"),
     render: function() {
         $(this.el).html(this.template({
             varName: this._options.varName, 
@@ -108,93 +107,62 @@ App.Views.StatPanel = Backbone.View.extend({
 
 App.Views.SkillPanel = App.Views.StatPanel.extend({  className: "skill" });
 App.Views.AttributePanel = App.Views.StatPanel.extend({  className: "attribute" });
-        
-App.Views.NavBarView = Backbone.View.extend({
-    initialize: function( options ) {
-    },
-    
-    events: {
-        "click #nav-back-button": "back"        
-    },
-    
-    back: function() {
-        history.go(-1);
-    },
-    
-    render: function() {
-        return this;
-    },
-    
-    setTitle: function( title ) {
-        this.$(".title").html(title);
-    },
-    
-    showBackButton: function( hash ) {
-        this.$(".back-button").show();
-    },
-    
-    hideBackButton: function() {
-        this.$(".back-button").hide();
-    }
-});
 
 App.Views.MainView = Backbone.View.extend({
     events: {
-        "keypress .create-npc": "create"        
+        "keypress .create-character": "createKeyPress",
+        "click .create-button": "createClick"
+    },
+    
+    initialize:function() {
+        _.bindAll( this, "createKeyPress", "createClick", "addOne", "addAll" );
+        this.model.bind('add',   this.addOne);
+        this.model.bind('reset', this.addAll);
+        this.listing = this.$('.listing');
+        this.input   = this.$(".create-character");
     },
     
     render: function() {
-        this.input = this.$(".create-npc");
         this.model.fetch();
         return this;
     },
     
-    initialize:function() {
-        $(this.el).html( _.template($("#main-view").html())(this.model.attributes) );
-        _.bindAll( this, "addOne", "addAll");
-        this.model.bind('add',     this.addOne);
-        this.model.bind('refresh', this.addAll);
-    },
-    
-    
-    addOne: function( npc ) {
-        var view = new App.Views.NPCView({model:npc});
-        this.$(".npc-list").append(view.render().el);
+    addOne: function( character ) {
+        var view = new App.Views.CharacterView({model:character});
+        this.listing.append(view.render().el);
+        if( this.listing.data('listview') ) {
+            this.listing.listview('refresh');
+        }
     },
     
     addAll: function() {
-        this.$(".npc-list").empty();
+        this.$(".listing").empty();
         this.model.each( this.addOne );
     },
     
-    create:function( e ) {
-        if (e.keyCode != 13) return;
-        var $input = this.$(".create-npc");
+    createKeyPress: function( e ) {
+        if( e.keyCode != 13 ) return;
+        this.create();
+    },
+    
+    createClick: function( e ) {
+        this.create();
+    },
+    
+    create: function( e ) {
         this.model.create({
-            name: $input.val()
+            name: this.input.val()
         });
-        $input.val("");
-    },
-    
-    getTitle: function() {
-        return "Characters";
-    },
-    
-    isMainView: function() {
-        return true;
+        this.input.val("");
     }
 });
 
 App.Views.DetailView = Backbone.View.extend({
-    initialize: function( options ) {
-        _.bindAll(this, "update");
-        this.model.bind("change", this.update);
-    },
-
+    tagName: "div",
+    
     render: function() {
-        $(this.el).html( _.template($("#detail-view").html())(this.model.attributes) );
-        var attributePanel = this.$(".attribute-panel");
-        var skillPanel = this.$(".skill-panel");
+        var attributePanel = this.$(".attribute-panel").empty();
+        var skillPanel = this.$(".skill-panel").empty();
         var model = this.model;
         _.each( this.model.ATTRIBUTES, function( item ) {
             attributePanel.append( new App.Views.AttributePanel({
@@ -212,73 +180,54 @@ App.Views.DetailView = Backbone.View.extend({
             skillPanel.append(skillView.render().el);
         });
         return this;
-    },
-    
-    update: function() {
-        
-    },
-    
-    getTitle: function() {
-        return "Details for " + this.model.get("name");
-    },
-    
-    isMainView: function() {
-        return false;
     }
 });
 
-App.Controllers.AppController = Backbone.Controller.extend({
-    _currentView: null,
+App.Controllers.AppController = Backbone.Router.extend( {    
+	initialize: function( options ) {
+		this.Characters = options.characters || new App.Collections.CharacterCollection();
+		this.mainView = new App.Views.MainView({
+		    el: $("#character-listing")[0],
+		    model: this.Characters
+		}).render();
+		this.detailView = new App.Views.DetailView({el:$("#character-details")[0]});
 
-    initialize: function( options ) {
-        this.NPCs = options.npcs || new App.Collections.NPCCollection();
-        this.navBar = options.navBar || new App.Views.NavBarView();
-        this.mainView = new App.Views.MainView({model:this.NPCs});
-    },
-    
-    setTitle: function( title ) {
-        this.navBar.setTitle( title );
-    },
-    
-    showBackButton: function() {
-        this.navBar.showBackButton();
-    },
-    
-    hideBackButton: function() {
-        this.navBar.hideBackButton();
-    },
-    
+		_.each( this.events, _.bind(function( eventName, fName ) {
+		    this.bind( eventName, this[fName] );
+		},this) );
+
+		return this;
+	},
+
+
     routes: {
-        "":     "main",
-        "npc/:id":  "details"
+        "#": "main",
+        "#character-details?id=:id": "details",
+        "#character-destroy?id=:id": "destroy"
     },
     
     main: function() {
-        this.showView( this.mainView );
+        this.mainView.render();
     },
     
     details: function( id ) {
-        var npc = new App.Models.NPC({id:id});
-        npc.collection = this.NPCs;
-        npc.fetch();
-        this.showView( new App.Views.DetailView({model:npc}) );
-    },
-
-    updateTitle: function() {
-        this.setTitle(this._currentView.getTitle());
+		debugger;
+        var character = new App.Models.Character({id:id});
+        character.collection = this.Characters;
+        character.fetch({
+            success: _.bind(function(model,response){
+                this.detailView.model = model;
+                this.detailView.render();
+            },this)
+        });
     },
     
-    showView: function( view ) {
-        this._currentView = view;
-        this.setTitle( view.getTitle() );
-        this[(view.isMainView()?"hide":"show")+"BackButton"]();
-        if( view.model ) {
-                view.model.bind("change", _.bind(this.updateTitle, this ) );
-        }
-        $("#main")
-            .empty()
-            .append( view.render().el );
+    destroy: function( id ) {
+        var character = new App.Models.Character({id:id});
+        character.collection = this.Characters;
+        character.destroy();
     }
+
 });
 
 $(function() {    
@@ -290,14 +239,10 @@ $(function() {
      */ 
     Backbone.sync = Backbone.syncLocal;    
 
-    var controller = new App.Controllers.AppController({
+    App.Controller = new App.Controllers.AppController({
         /* Inject Models */
-        npcs: new App.Collections.NPCCollection(),
-        
-        /* Inject Views */
-        navBar: new App.Views.NavBarView({el:$("#nav-bar").get(0)})
+        characters: new App.Collections.CharacterCollection(),
         
     });
     
-    Backbone.history.start();
 });

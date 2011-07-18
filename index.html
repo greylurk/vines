@@ -1,49 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <title>Vines</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="initial-scale=1,user-scalable=no" />
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
         <script type="text/javascript" src="js/underscore.js"></script>
-        <script type="text/javascript" src="js/zepto.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
         <script type="text/javascript" src="js/json2.js"></script>
         <script type="text/javascript" src="js/backbone.js"></script>
         <script type="text/javascript" src="js/backbone.localStorage.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
-        <link rel="stylesheet" href="css/main.css" type="text/css" />
+        <script type="text/javascript" src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.js"></script>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     </head>
-    
     <body>
-        <div id="nav-bar">
-            <a class="back-button" href="#">Back</a>
-            <h1 class="title"></h1>
-        </div>
-        <div id="main">
-        </div>
-        
-        <div id="templates">
-            <div id="main-view">
-                <div class='view-screen'>
-                    <div>
-                        <input type='text' class='create-npc' placeholder='Add a Character' />
-                    </div>
-                    <div class='npcs'>
-                        <ul class='npc-list'></ul>
-                    </div>
-                </div>
+        <div data-role="page" id="character-listing">
+            <div data-role="header">
+                <h1>Character List</h1>
             </div>
-            <div id="detail-view">
-                <div class="accordion-head">Attributes</div>
-                <div class="accordion-panel attribute-panel">
-                </div>
-                <div class="accordion-head">Skills</div>
-                <div class="accordion-panel skill-panel">
-                </div>
-                <div class="accordion-head">Rolls</div>
-                <div class="accordion-panel">
-                </div>
+            <div data-role="content">
+                <ul data-role="listview" class="listing">
+                </ul>
+            </div>
+            <div data-role="footer">
+                <input type='text' class='create-character' placeholder='Add a Character' />
+                <a href="javascript:void(0);" class="create-button" data-icon="add">Add</a>
+            </div>
+        </div>
+        <div data-role="page" id="character-details">
+            <div data-role="header">
+                <h1>Details for <span class="name"></span></h1>
+            </div>
+            <div data-role="content">
+            </div>
+            <div data-role="footer">
             </div>
         </div>
     </body>
-
 </html>

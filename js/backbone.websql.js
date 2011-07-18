@@ -41,10 +41,12 @@ _.extend(WebSQL.prototype, {
         var result;
         this.db.readTransaction(function(tx) {
             tx.executeSql("SELECT * FROM models",[],function( tx, rs ) {
-                result = _.map(rs.rows,function(row){
-                    return JSON.parse(row.data);
-                });
-                success( result );
+                var rows = rs.rows;
+                var results=[];
+                for( var i=0; i < rows.length; i++ ) {
+                    results[i] = JSON.parse(rows.item(i));
+                }
+                success( results );
             }, function( tx, err ) {
                 error( JSON.stringify(err ) );
             });
@@ -65,7 +67,7 @@ _.extend(WebSQL.prototype, {
     }
 });
 
-Backbone.syncWebSQL = function(method, model, success, error) {
+Backbone.syncWebSQL = function(method, model, options) {
     var resp;
     var store = model.webSQL || model.collection.webSQL;
 
@@ -90,9 +92,9 @@ Backbone.syncWebSQL = function(method, model, success, error) {
     }
 
     if (resp) {
-        success(resp);
+        options.success(resp);
     } else {
-        error("Record not found");
+        options.error("Record not found");
     }
 };
 
