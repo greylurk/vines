@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Vines</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="initial-scale=1,user-scalable=no" />
+        <script type="text/javascript" src="js/underscore.js"></script>
+        <script type="text/javascript" src="js/zepto.js"></script>
+        <script type="text/javascript" src="js/json2.js"></script>
+        <script type="text/javascript" src="js/backbone.js"></script>
+        <script type="text/javascript" src="js/backbone.localStorage.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <link rel="stylesheet" href="css/main.css" type="text/css" />
+    </head>
+    
+    <body>
+        <div id="main-view" class="screen">
+            <div class="nav-bar">
+                <a class="back-button" href="#">Back</a>
+                <h1 class="title">Character Listing</h1>
+            </div>
+            <div class='view-screen'>
+                <div class='npcs'>
+                    <ul class='npc-list'></ul>
+                </div>
+
+            </div>
+            <div>
+                <input type='text' class='create-npc' placeholder='Add a Character' />
+            </div>
+        </div>
+        <div id="detail-view" class="screen">
+            <div class="nav-bar">
+                <a class="back-button" href="#">Back</a>
+                <h1 class="title"></h1>
+            </div>
+            <div class="view-screen">
+                <ul id="detail-view" class="rounded">
+                    <li>
+                        <div class="accordion-head">Attributes</div>
+                        <div class="accordion-panel attribute-panel">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="accordion-head">Skills</div>
+                        <div class="accordion-panel skill-panel">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="accordion-head">Rolls</div>
+                        <div class="accordion-panel">
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+
+</html>
