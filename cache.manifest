@@ -1,14 +1,25 @@
 CACHE MANIFEST
-# rev 10
+# rev 11
 FALLBACK:
-/NPCs/ /NPCs/index.html
+/vines/ /vines/index.html
 CACHE:
-/NPCs/js/backbone.js
-/NPCs/js/backbone.localStorage.js
-/NPCs/js/json2.js
-/NPCs/js/main.js
-/NPCs/js/underscore.js
-/NPCs/js/zepto.js
-/NPCs/css/main.css
-/NPCs/images/destroy.png
-/NPCs/index.html
+/vines/js/backbone.js
+/vines/js/backbone.localStorage.js
+/vines/js/json2.js
+/vines/js/main.js
+/vines/js/main.js
+/vines/js/underscore.js
+/vines/js/zepto.js
+
+/vines/js/model/character.js
+
+/vines/js/view/index.js
+/vines/js/view/detail.js
+
+/vines/js/controller/index.js
+/vines/js/controller/detail.js
+
+/vines/css/main.css
+/vines/images/destroy.png
+/vines/index.html
+/vines/detail.html

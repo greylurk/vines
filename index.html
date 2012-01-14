@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.min.css" />
-        <script type="text/javascript" src="js/underscore.js"></script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
         <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.js"></script>
+
+        <script type="text/javascript" src="js/underscore.js"></script>
         <script type="text/javascript" src="js/json2.js"></script>
         <script type="text/javascript" src="js/backbone.js"></script>
         <script type="text/javascript" src="js/backbone.localStorage.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/mobile/1.0b1/jquery.mobile-1.0b1.js"></script>
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+        <script type="text/javascript" src="js/view/index.js"></script>
+        <script type="text/javascript" src="js/controller/index.js"></script>
+        <script type="text/javascript" src="js/model/character.js"></script>
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1,width=device-width,height=device-height,user-scalable=no" />
     </head>
     <body>
         <div data-role="page" id="character-listing">
@@ -23,15 +26,6 @@
             <div data-role="footer">
                 <input type='text' class='create-character' placeholder='Add a Character' />
                 <a href="javascript:void(0);" class="create-button" data-icon="add">Add</a>
-            </div>
-        </div>
-        <div data-role="page" id="character-details">
-            <div data-role="header">
-                <h1>Details for <span class="name"></span></h1>
-            </div>
-            <div data-role="content">
-            </div>
-            <div data-role="footer">
             </div>
         </div>
     </body>
